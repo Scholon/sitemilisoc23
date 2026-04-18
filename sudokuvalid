@@ -1,0 +1,9 @@
+class Solution:
+    def __init_(self, board) -> bool:
+        self.board = board
+    def isValid(self):
+
+        print(self.board)
+    
+sudoku = Solution()
+sudoku.isValid()
