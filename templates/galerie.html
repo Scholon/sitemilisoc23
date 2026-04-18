@@ -1,0 +1,531 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galerie Foto — Restaurant Milișoc, Căușeni</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #C8973A;
+    --gold-light: #EDD59A;
+    --dark: #1A120B;
+    --dark-mid: #2E1E10;
+    --cream: #F9F3E8;
+    --cream-mid: #EEE3CA;
+    --text: #3B2A1A;
+    --text-muted: #7A5C3C;
+    --border: #D4B879;
+  }
+
+  body {
+    background: var(--cream);
+    color: var(--text);
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  header {
+    background: var(--dark);
+    padding: 3rem 2rem 2.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(45deg, transparent, transparent 18px, rgba(200,151,58,0.06) 18px, rgba(200,151,58,0.06) 19px);
+  }
+
+  .header-ornament { color: var(--gold); font-size: 1.2rem; letter-spacing: 0.5rem; margin-bottom: 0.6rem; position: relative; }
+
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 600; color: #fff;
+    letter-spacing: 0.06em; line-height: 1.15; position: relative;
+  }
+  header h1 span { color: var(--gold); }
+
+  .header-sub {
+    font-size: 0.82rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--gold-light); margin-top: 0.5rem; position: relative;
+  }
+
+  .divider-gold {
+    display: flex; align-items: center; gap: 0.75rem;
+    margin: 1rem auto 0; width: fit-content; position: relative;
+  }
+  .divider-gold::before, .divider-gold::after {
+    content: ''; display: block; width: 60px; height: 1px;
+    background: var(--gold); opacity: 0.7;
+  }
+  .divider-gold .diamond { width: 6px; height: 6px; background: var(--gold); transform: rotate(45deg); }
+
+  .info-bar {
+    background: var(--dark-mid); padding: 0.75rem 1rem;
+    display: flex; justify-content: center; gap: 2.5rem; flex-wrap: wrap;
+  }
+  .info-bar span { color: var(--gold-light); font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; }
+  .info-bar span strong { color: #fff; font-weight: 400; margin-left: 0.4rem; }
+
+  nav.breadcrumb {
+    background: var(--cream-mid);
+    padding: 0.65rem 2rem;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--border);
+  }
+  nav.breadcrumb a { color: var(--gold); text-decoration: none; }
+  nav.breadcrumb a:hover { text-decoration: underline; }
+
+  /* ── FILTER TABS ── */
+  .filter-bar {
+    padding: 2rem 1.5rem 0;
+    display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    padding: 0.45rem 1.2rem;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    background: none;
+    color: var(--text-muted);
+    font-family: 'Lato', sans-serif;
+    font-size: 0.76rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .filter-btn:hover { border-color: var(--gold); color: var(--gold-light); }
+
+  .filter-btn.active {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--dark);
+    font-weight: 700;
+  }
+
+  /* ── GALLERY SECTION LABEL ── */
+  .gallery-label {
+    text-align: center;
+    padding: 2rem 1.5rem 1.5rem;
+  }
+
+  .gallery-label span {
+    font-size: 0.68rem; letter-spacing: 0.35em; text-transform: uppercase;
+    color: var(--gold); display: block; margin-bottom: 0.3rem;
+  }
+
+  .gallery-label h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.7rem; font-weight: 400; color: var(--dark);
+  }
+  .gallery-label h2 em { font-style: italic; color: var(--gold); }
+
+  /* ── MASONRY GRID ── */
+  .gallery-grid {
+    columns: 3 280px;
+    column-gap: 10px;
+    padding: 0 1.5rem 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .gallery-item {
+    break-inside: avoid;
+    margin-bottom: 10px;
+    overflow: hidden;
+    border-radius: 3px;
+    position: relative;
+    cursor: pointer;
+    display: block;
+  }
+
+  .gallery-item img {
+    width: 100%;
+    display: block;
+    transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    filter: brightness(0.88) saturate(0.85);
+  }
+
+  .gallery-item:hover img {
+    transform: scale(1.06);
+    filter: brightness(1) saturate(1);
+  }
+
+  .gallery-item .overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(26,18,11,0.72) 0%, transparent 55%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    display: flex; align-items: flex-end; padding: 1rem;
+  }
+
+  .gallery-item:hover .overlay { opacity: 1; }
+
+  .overlay-label {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.92rem;
+    color: #fff;
+    font-style: italic;
+  }
+
+  .overlay-cat {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    display: block;
+    margin-bottom: 0.2rem;
+  }
+
+  /* ── LIGHTBOX ── */
+  .lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(26, 18, 11, 0.96);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  .lightbox.open { display: flex; }
+
+  .lightbox-img-wrap {
+    position: relative;
+    max-width: 90vw;
+    max-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .lightbox img {
+    max-width: 90vw;
+    max-height: 78vh;
+    object-fit: contain;
+    border-radius: 3px;
+    display: block;
+  }
+
+  .lightbox-caption {
+    margin-top: 1rem;
+    text-align: center;
+  }
+
+  .lightbox-caption .cap-cat {
+    font-size: 0.68rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--gold); display: block; margin-bottom: 0.2rem;
+  }
+
+  .lightbox-caption .cap-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem; color: #fff; font-style: italic;
+  }
+
+  .lb-close {
+    position: fixed;
+    top: 1.5rem; right: 1.8rem;
+    background: none; border: 1px solid var(--border);
+    color: var(--gold); font-size: 1.4rem; cursor: pointer;
+    width: 40px; height: 40px; border-radius: 2px;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s;
+    font-weight: 300;
+    line-height: 1;
+  }
+  .lb-close:hover { background: var(--dark-mid); }
+
+  .lb-arrow {
+    position: fixed;
+    top: 50%; transform: translateY(-50%);
+    background: none; border: 1px solid var(--border);
+    color: var(--gold); font-size: 1.3rem; cursor: pointer;
+    width: 46px; height: 46px; border-radius: 2px;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s;
+  }
+  .lb-arrow:hover { background: var(--dark-mid); }
+  .lb-prev { left: 1.2rem; }
+  .lb-next { right: 1.2rem; }
+
+  .lb-counter {
+    position: fixed;
+    bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+    font-size: 0.72rem; letter-spacing: 0.2em; color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  /* ── HIDDEN by category ── */
+  .gallery-item.hidden { display: none; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--dark);
+    border-top: 1px solid var(--dark-mid);
+    color: var(--gold-light);
+    text-align: center; padding: 2rem 1.5rem;
+    font-size: 0.82rem; letter-spacing: 0.06em;
+  }
+  footer .footer-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem; color: var(--gold); display: block; margin-bottom: 0.4rem;
+  }
+  footer .footer-details { color: #9E7D55; margin-top: 0.4rem; line-height: 2; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-ornament">✦ ✦ ✦</div>
+  <h1>Hotel <span>Milișoc</span></h1>
+  <p class="header-sub">Restaurantul & Pizzeria — Căușeni, Moldova</p>
+  <div class="divider-gold"><div class="diamond"></div></div>
+</header>
+
+<div class="info-bar">
+  <span>Program:<strong>08:00 – 23:00</strong></span>
+  <span>Adresă:<strong>str. Alexei Mateevici 11, Căușeni</strong></span>
+  <span>Telefon:<strong>+373 243 22 291</strong></span>
+</div>
+
+<nav class="breadcrumb">
+  <a href="meniu-milisoc.html">Meniu</a> &nbsp;›&nbsp;
+  <a href="rezervare-milisoc.html">Rezervare</a> &nbsp;›&nbsp;
+  Galerie foto
+</nav>
+
+<div class="filter-bar">
+  <button class="filter-btn active" data-filter="all">Toate</button>
+  <button class="filter-btn" data-filter="interior">Interior</button>
+  <button class="filter-btn" data-filter="terasa">Terasă</button>
+  <button class="filter-btn" data-filter="bucatarie">Bucătărie</button>
+  <button class="filter-btn" data-filter="pizza">Pizza</button>
+  <button class="filter-btn" data-filter="evenimente">Evenimente</button>
+</div>
+
+<div class="gallery-label">
+  <span>Fotografii</span>
+  <h2>Momente din <em>Milișoc</em></h2>
+</div>
+
+<div class="gallery-grid" id="galleryGrid">
+
+  <!-- INTERIOR -->
+  <div class="gallery-item" data-cat="interior" data-title="Sala principală" data-index="0">
+    <img src="https://picsum.photos/seed/rest1/600/450" alt="Sala principală">
+    <div class="overlay"><div><span class="overlay-cat">Interior</span><span class="overlay-label">Sala principală</span></div></div>
+  </div>
+
+  <div class="gallery-item" data-cat="bucatarie" data-title="Preparate tradiționale moldovenești" data-index="1">
+    <img src="https://picsum.photos/seed/food2/600/700" alt="Preparate moldovenești">
+    <div class="overlay"><div><span class="overlay-cat">Bucătărie</span><span class="overlay-label">Preparate tradiționale</span></div></div>
+  </div>
+
+  <div class="gallery-item" data-cat="terasa" data-title="Terasa de vară" data-index="2">
+    <img src="https://picsum.photos/seed/terrace3/600/420" alt="Terasă">
+    <div class="overlay"><div><span class="overlay-cat">Terasă</span><span class="overlay-label">Terasa de vară</span></div></div>
+  </div>
+
+  <div class="gallery-item" data-cat="pizza" data-title="Pizza Milișoc" data-index="3">
+    <img src="https://picsum.photos/seed/pizza4/600/600" alt="Pizza">
+    <div class="overlay"><div><span class="overlay-cat">Pizza</span><span class="overlay-label">Pizza Milișoc</span></div></div>
+  </div>
+
+  <div class="gallery-item" data-cat="interior" data-title="Zona bar" data-index="4">
+    <img src="https://picsum.photos/seed/bar5/600/480" alt="Bar">
+    <div class="overlay"><div><span class="overlay-cat">Interior</span><span class="overlay-label">Zona bar</span></div></div>
+  </div>
+
+  <div class="gallery-item" data-cat="evenimente" data-title="Seară festivă" data-index="5">
+    <img src="https://picsum.photos/seed/event6/600/750" alt="Eveniment">
+    <div class="overlay"><div><span class="overlay-cat">Evenimente</span><span class="overlay-label">Seară festivă</span></div></div>
+  </div>
+
+  <div class="gallery-item" data-cat="bucatarie" data-title="Mici moldovenești la grătar" data-index="6">
+    <img src="https://picsum.photos/seed/grill7/600/500" alt="Grătar">
+    <div class="overlay"><div><span class="overlay-cat">Bucătărie</span><span class="overlay-label">Mici la grătar</span></div></div>
+  </div>
+
+  <div class="gallery-item" data-cat="terasa" data-title="Amurg pe terasă" data-index="7">
+    <img src="https://picsum.photos/seed/terrace8/600/400" alt="Terasă seară">
+    <div class="overlay"><div><span class="overlay-cat">Terasă</span><span class="overlay-label">Amurg pe terasă</span></div></div>
+  </div>
+
+  <div class="gallery-item" data-cat="interior" data-title="Detaliu decorativ" data-index="8">
+    <img src="https://picsum.photos/seed/detail9/600/680" alt="Detaliu interior">
+    <div class="overlay"><div><span class="overlay-cat">Interior</span><span class="overlay-label">Detaliu decorativ</span></div></div>
+  </div>
+
+  <div class="gallery-item" data-cat="pizza" data-title="Cuptor de pizza" data-index="9">
+    <img src="https://picsum.photos/seed/oven10/600/520" alt="Cuptor pizza">
+    <div class="overlay"><div><span class="overlay-cat">Pizza</span><span class="overlay-label">Cuptor de pizza</span></div></div>
+  </div>
+
+  <div class="gallery-item" data-cat="evenimente" data-title="Masă de familie" data-index="10">
+    <img src="https://picsum.photos/seed/family11/600/460" alt="Masă de familie">
+    <div class="overlay"><div><span class="overlay-cat">Evenimente</span><span class="overlay-label">Masă de familie</span></div></div>
+  </div>
+
+  <div class="gallery-item" data-cat="bucatarie" data-title="Ciorbă de burtă" data-index="11">
+    <img src="https://picsum.photos/seed/soup12/600/600" alt="Ciorbă">
+    <div class="overlay"><div><span class="overlay-cat">Bucătărie</span><span class="overlay-label">Ciorbă de burtă</span></div></div>
+  </div>
+
+  <div class="gallery-item" data-cat="interior" data-title="Intrarea restaurantului" data-index="12">
+    <img src="https://picsum.photos/seed/entrance13/600/720" alt="Intrare">
+    <div class="overlay"><div><span class="overlay-cat">Interior</span><span class="overlay-label">Intrarea restaurantului</span></div></div>
+  </div>
+
+  <div class="gallery-item" data-cat="terasa" data-title="Terasa în umbră" data-index="13">
+    <img src="https://picsum.photos/seed/shade14/600/500" alt="Terasă umbrar">
+    <div class="overlay"><div><span class="overlay-cat">Terasă</span><span class="overlay-label">Terasa în umbră</span></div></div>
+  </div>
+
+  <div class="gallery-item" data-cat="pizza" data-title="Pizza 4 Brânzeturi" data-index="14">
+    <img src="https://picsum.photos/seed/cheese15/600/580" alt="Pizza brânzeturi">
+    <div class="overlay"><div><span class="overlay-cat">Pizza</span><span class="overlay-label">Pizza 4 Brânzeturi</span></div></div>
+  </div>
+
+  <div class="gallery-item" data-cat="evenimente" data-title="Aniversare la Milișoc" data-index="15">
+    <img src="https://picsum.photos/seed/bday16/600/440" alt="Aniversare">
+    <div class="overlay"><div><span class="overlay-cat">Evenimente</span><span class="overlay-label">Aniversare la Milișoc</span></div></div>
+  </div>
+
+  <div class="gallery-item" data-cat="bucatarie" data-title="Sarmale moldovenești" data-index="16">
+    <img src="https://picsum.photos/seed/sarmale17/600/640" alt="Sarmale">
+    <div class="overlay"><div><span class="overlay-cat">Bucătărie</span><span class="overlay-label">Sarmale moldovenești</span></div></div>
+  </div>
+
+  <div class="gallery-item" data-cat="interior" data-title="Lumina de seară" data-index="17">
+    <img src="https://picsum.photos/seed/light18/600/490" alt="Lumina seară">
+    <div class="overlay"><div><span class="overlay-cat">Interior</span><span class="overlay-label">Lumina de seară</span></div></div>
+  </div>
+
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" id="lbClose">✕</button>
+  <button class="lb-arrow lb-prev" id="lbPrev">&#8592;</button>
+  <button class="lb-arrow lb-next" id="lbNext">&#8594;</button>
+  <div class="lightbox-img-wrap">
+    <img id="lbImg" src="" alt="">
+  </div>
+  <div class="lightbox-caption">
+    <span class="cap-cat" id="lbCat"></span>
+    <span class="cap-title" id="lbTitle"></span>
+  </div>
+  <div class="lb-counter" id="lbCounter"></div>
+</div>
+
+<footer>
+  <span class="footer-name">Hotel-Pizzeria Milișoc</span>
+  <div class="footer-details">
+    str. Alexei Mateevici 11, Căușeni, Moldova<br>
+    +373 243 22 291<br>
+    Luni – Duminică: 08:00 – 23:00
+  </div>
+  <div style="margin-top:1.2rem; font-size:0.72rem; color:#5C3D1E; letter-spacing:0.1em;">
+    ✦ BUCĂTĂRIE TRADIȚIONALĂ MOLDOVENEASCĂ ✦
+  </div>
+</footer>
+
+<script>
+  const items = Array.from(document.querySelectorAll('.gallery-item'));
+  let visibleItems = items;
+  let currentIndex = 0;
+
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lbImg');
+  const lbCat = document.getElementById('lbCat');
+  const lbTitle = document.getElementById('lbTitle');
+  const lbCounter = document.getElementById('lbCounter');
+
+  function openLightbox(index) {
+    currentIndex = index;
+    updateLightbox();
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function updateLightbox() {
+    const item = visibleItems[currentIndex];
+    const img = item.querySelector('img');
+    lbImg.src = img.src;
+    lbImg.alt = img.alt;
+    lbCat.textContent = item.dataset.cat.charAt(0).toUpperCase() + item.dataset.cat.slice(1);
+    lbTitle.textContent = item.dataset.title;
+    lbCounter.textContent = (currentIndex + 1) + ' / ' + visibleItems.length;
+  }
+
+  function closeLightbox() {
+    lb.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  items.forEach(function(item, i) {
+    item.addEventListener('click', function() {
+      const vi = visibleItems.indexOf(item);
+      if (vi !== -1) openLightbox(vi);
+    });
+  });
+
+  document.getElementById('lbClose').addEventListener('click', closeLightbox);
+
+  document.getElementById('lbPrev').addEventListener('click', function() {
+    currentIndex = (currentIndex - 1 + visibleItems.length) % visibleItems.length;
+    updateLightbox();
+  });
+
+  document.getElementById('lbNext').addEventListener('click', function() {
+    currentIndex = (currentIndex + 1) % visibleItems.length;
+    updateLightbox();
+  });
+
+  lb.addEventListener('click', function(e) {
+    if (e.target === lb) closeLightbox();
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') { currentIndex = (currentIndex - 1 + visibleItems.length) % visibleItems.length; updateLightbox(); }
+    if (e.key === 'ArrowRight') { currentIndex = (currentIndex + 1) % visibleItems.length; updateLightbox(); }
+  });
+
+  document.querySelectorAll('.filter-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      items.forEach(function(item) {
+        if (filter === 'all' || item.dataset.cat === filter) {
+          item.classList.remove('hidden');
+        } else {
+          item.classList.add('hidden');
+        }
+      });
+      visibleItems = items.filter(function(item) { return !item.classList.contains('hidden'); });
+    });
+  });
+</script>
+</body>
+</html>
+{% endblock %}

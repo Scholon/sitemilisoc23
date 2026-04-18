@@ -1,0 +1,303 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acasă — Restaurant Milișoc, Căușeni</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #C8973A;
+    --gold-light: #EDD59A;
+    --dark: #1A120B;
+    --dark-mid: #2E1E10;
+    --cream: #F9F3E8;
+    --cream-mid: #EEE3CA;
+    --text: #3B2A1A;
+    --text-muted: #7A5C3C;
+    --border: #D4B879;
+  }
+
+  body {
+    background: var(--cream);
+    color: var(--text);
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--dark);
+    padding: 3rem 2rem 2.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(45deg, transparent, transparent 18px, rgba(200,151,58,0.06) 18px, rgba(200,151,58,0.06) 19px);
+  }
+  .header-ornament { color: var(--gold); font-size: 1.2rem; letter-spacing: 0.5rem; margin-bottom: 0.6rem; position: relative; }
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 600; color: #fff;
+    letter-spacing: 0.06em; line-height: 1.15; position: relative;
+  }
+  header h1 span { color: var(--gold); }
+  .header-sub {
+    font-size: 0.82rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--gold-light); margin-top: 0.5rem; position: relative;
+  }
+  .divider-gold {
+    display: flex; align-items: center; gap: 0.75rem;
+    margin: 1rem auto 0; width: fit-content; position: relative;
+  }
+  .divider-gold::before, .divider-gold::after {
+    content: ''; display: block; width: 60px; height: 1px;
+    background: var(--gold); opacity: 0.7;
+  }
+  .divider-gold .diamond { width: 6px; height: 6px; background: var(--gold); transform: rotate(45deg); }
+
+  .info-bar {
+    background: var(--dark-mid); padding: 0.75rem 1rem;
+    display: flex; justify-content: center; gap: 2.5rem; flex-wrap: wrap;
+  }
+  .info-bar span { color: var(--gold-light); font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; }
+  .info-bar span strong { color: #fff; font-weight: 400; margin-left: 0.4rem; }
+
+  /* ── HERO SECTION ── */
+  .hero {
+    position: relative;
+    height: 60vh;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: url('https://picsum.photos/seed/hero-rest/1920/1080') center/cover no-repeat;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(26,18,11,0.5), rgba(26,18,11,0.8));
+  }
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    padding: 2rem;
+    max-width: 800px;
+  }
+  .hero-content h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    color: #fff;
+    font-weight: 400;
+    margin-bottom: 1rem;
+    font-style: italic;
+  }
+  .hero-content p {
+    color: var(--cream-mid);
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    letter-spacing: 0.05em;
+  }
+  .btn {
+    display: inline-block;
+    padding: 0.8rem 2rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+    font-weight: 400;
+  }
+  .btn-gold {
+    background: var(--gold);
+    color: var(--dark);
+    border: 1px solid var(--gold);
+  }
+  .btn-gold:hover {
+    background: transparent;
+    color: var(--gold);
+  }
+  .btn-outline {
+    background: transparent;
+    color: #fff;
+    border: 1px solid var(--gold);
+    margin-left: 1rem;
+  }
+  .btn-outline:hover {
+    background: var(--gold);
+    color: var(--dark);
+  }
+
+  /* ── WELCOME / ABOUT ── */
+  .welcome-section {
+    padding: 5rem 2rem;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .welcome-section .label {
+    font-size: 0.7rem; letter-spacing: 0.35em; text-transform: uppercase;
+    color: var(--gold); display: block; margin-bottom: 1rem;
+  }
+  .welcome-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem; font-weight: 400; color: var(--dark);
+    margin-bottom: 1.5rem;
+  }
+  .welcome-section p {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+  }
+
+  /* ── QUICK LINKS GRID ── */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 0 2rem 5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .feature-card {
+    background: #fff;
+    border: 1px solid var(--cream-mid);
+    padding: 2.5rem 2rem;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-decoration: none;
+    display: block;
+    color: inherit;
+  }
+  .feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(46,30,16,0.08);
+    border-color: var(--border);
+  }
+  .feature-icon {
+    font-size: 2rem;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+  .feature-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--dark);
+    margin-bottom: 0.8rem;
+    font-style: italic;
+  }
+  .feature-card p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+  }
+  .feature-link {
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 700;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--dark);
+    border-top: 1px solid var(--dark-mid);
+    color: var(--gold-light);
+    text-align: center; padding: 3rem 1.5rem;
+    font-size: 0.82rem; letter-spacing: 0.06em;
+  }
+  footer .footer-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem; color: var(--gold); display: block; margin-bottom: 0.6rem;
+  }
+  footer .footer-details { color: #9E7D55; margin-top: 0.5rem; line-height: 2; }
+
+  @media (max-width: 600px) {
+    .btn-outline { margin-left: 0; margin-top: 1rem; display: block; }
+    .hero-content h2 { font-size: 2.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-ornament">✦ ✦ ✦</div>
+  <h1>Hotel <span>Milișoc</span></h1>
+  <p class="header-sub">Restaurantul & Pizzeria — Căușeni, Moldova</p>
+  <div class="divider-gold"><div class="diamond"></div></div>
+</header>
+
+<div class="info-bar">
+  <span>Program:<strong>08:00 – 23:00</strong></span>
+  <span>Adresă:<strong>str. Alexei Mateevici 11, Căușeni</strong></span>
+  <span>Telefon:<strong>+373 243 22 291</strong></span>
+</div>
+
+<section class="hero">
+  <div class="hero-content">
+    <h2>Tradiție și bun gust</h2>
+    <p>Descoperă savoarea autentică a bucătăriei moldovenești într-o atmosferă caldă și primitoare, chiar în inima orașului Căușeni.</p>
+    <a href="/meniu" class="btn btn-gold">Vezi Meniul</a>
+    <a href="/rezervare-masa" class="btn btn-outline">Rezervă o masă</a>
+  </div>
+</section>
+
+<section class="welcome-section">
+  <span class="label">Povestea Noastră</span>
+  <h2>Bine ați venit la Milișoc</h2>
+  <div class="divider-gold" style="margin: 0 auto 1.5rem;"><div class="diamond"></div></div>
+  <p>Fie că doriți să savurați o ciorbă aburindă, sarmale făcute ca la mama acasă, sau o pizza rumenită perfect în cuptorul nostru, la Hotel & Restaurant Milișoc veți găsi mereu calitatea și ospitalitatea de care aveți nevoie pentru o masă perfectă alături de cei dragi.</p>
+</section>
+
+<section class="features-grid">
+  <a href="/meniu" class="feature-card">
+    <div class="feature-icon">✦</div>
+    <h3>Meniul Nostru</h3>
+    <p>Gustă din preparatele noastre tradiționale, pregătite cu ingrediente proaspete și multă pasiune de bucătarii noștri.</p>
+    <span class="feature-link">Descoperă Gustul ➝</span>
+  </a>
+
+  <a href="/galerie" class="feature-card">
+    <div class="feature-icon">✦</div>
+    <h3>Galerie Foto</h3>
+    <p>Aruncă o privire în interiorul restaurantului nostru, pe terasa de vară și la evenimentele speciale organizate aici.</p>
+    <span class="feature-link">Vezi Fotografiile ➝</span>
+  </a>
+
+  <a href="/rezervare-masa" class="feature-card">
+    <div class="feature-icon">✦</div>
+    <h3>Evenimente & Rezervări</h3>
+    <p>Organizăm mese festive, zile de naștere și evenimente de familie într-un cadru elegant și intim.</p>
+    <span class="feature-link">Rezervă Acum ➝</span>
+  </a>
+</section>
+
+<footer>
+  <span class="footer-name">Hotel-Pizzeria Milișoc</span>
+  <div class="footer-details">
+    str. Alexei Mateevici 11, Căușeni, Moldova<br>
+    Rezervări: +373 243 22 291<br>
+    Luni – Duminică: 08:00 – 23:00
+  </div>
+  <div style="margin-top:1.5rem; font-size:0.75rem; color:#5C3D1E; letter-spacing:0.15em;">
+    ✦ BUCĂTĂRIE TRADIȚIONALĂ MOLDOVENEASCĂ ✦
+  </div>
+</footer>
+
+</body>
+</html>
+{% endblock%}
