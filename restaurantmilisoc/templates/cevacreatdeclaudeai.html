@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Restaurant Milisoc – Căușeni, Moldova</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #FAF6EF;
+      --warm: #F2E8D5;
+      --brown: #5C3D2E;
+      --gold: #C49A3C;
+      --dark: #1E1410;
+      --text: #3A2A1E;
+      --muted: #8B7355;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 4rem;
+      background: rgba(250, 246, 239, 0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(196, 154, 60, 0.25);
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      color: var(--brown);
+      letter-spacing: 0.04em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--gold); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      background: var(--dark);
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1600&q=80') center/cover no-repeat;
+      opacity: 0.35;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(30,20,16,0.3) 0%, rgba(30,20,16,0.7) 100%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 2rem;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      padding: 0.4rem 1.2rem;
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3.5rem, 8vw, 7rem);
+      color: #fff;
+      line-height: 1.05;
+      margin-bottom: 1rem;
+      animation: fadeUp 0.8s 0.15s ease both;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .hero-sub {
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.75);
+      font-weight: 300;
+      letter-spacing: 0.04em;
+      margin-bottom: 2.5rem;
+      animation: fadeUp 0.8s 0.3s ease both;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.9rem 2.5rem;
+      background: var(--gold);
+      color: var(--dark);
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s;
+      animation: fadeUp 0.8s 0.45s ease both;
+    }
+
+    .btn:hover { background: #d4ab4a; transform: translateY(-2px); }
+
+    /* ── ABOUT ── */
+    .about {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 600px;
+    }
+
+    .about-img {
+      background: url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=900&q=80') center/cover no-repeat;
+    }
+
+    .about-text {
+      background: var(--warm);
+      padding: 5rem 4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .about-text h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.6rem;
+      line-height: 1.2;
+      color: var(--brown);
+      margin-bottom: 1.5rem;
+    }
+
+    .about-text p {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.85;
+      margin-bottom: 1rem;
+    }
+
+    .stats {
+      display: flex;
+      gap: 2.5rem;
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(196,154,60,0.3);
+    }
+
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      color: var(--brown);
+    }
+
+    .stat-label {
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    /* ── MENU HIGHLIGHTS ── */
+    .menu-section {
+      padding: 6rem 4rem;
+      background: var(--cream);
+      text-align: center;
+    }
+
+    .menu-section h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.8rem;
+      color: var(--brown);
+      margin-bottom: 0.5rem;
+    }
+
+    .menu-section .intro {
+      color: var(--muted);
+      font-size: 1rem;
+      margin-bottom: 3.5rem;
+      font-style: italic;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .menu-card {
+      background: #fff;
+      border: 1px solid rgba(196,154,60,0.2);
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .menu-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(92,61,46,0.12);
+    }
+
+    .menu-card-img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .menu-card-body {
+      padding: 1.5rem;
+      text-align: left;
+    }
+
+    .menu-card-tag {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+
+    .menu-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      color: var(--brown);
+      margin-bottom: 0.5rem;
+    }
+
+    .menu-card p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .menu-card-price {
+      margin-top: 1rem;
+      font-weight: 700;
+      color: var(--gold);
+      font-size: 1rem;
+    }
+
+    /* ── GALLERY ── */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: 280px 280px;
+    }
+
+    .gallery-item {
+      overflow: hidden;
+      position: relative;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .gallery-item:hover img { transform: scale(1.07); }
+
+    .gallery-item:first-child {
+      grid-column: span 2;
+      grid-row: span 2;
+    }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials {
+      background: var(--dark);
+      padding: 6rem 4rem;
+      text-align: center;
+    }
+
+    .testimonials h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
+      color: #fff;
+      margin-bottom: 3rem;
+    }
+
+    .testi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .testi-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(196,154,60,0.2);
+      padding: 2rem;
+      text-align: left;
+    }
+
+    .stars { color: var(--gold); font-size: 1rem; margin-bottom: 1rem; }
+
+    .testi-card p {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.8;
+      font-style: italic;
+      margin-bottom: 1.2rem;
+    }
+
+    .testi-author {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    /* ── INFO ── */
+    .info-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .info-map {
+      background: #d9cfc4;
+      min-height: 400px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .info-map iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      position: absolute;
+      inset: 0;
+    }
+
+    .info-details {
+      background: var(--brown);
+      padding: 4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 2rem;
+    }
+
+    .info-details h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+
+    .info-item {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    .info-icon {
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold);
+      font-size: 1rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .info-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 4px;
+    }
+
+    .info-value {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.8);
+      line-height: 1.6;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark);
+      text-align: center;
+      padding: 2rem;
+      border-top: 1px solid rgba(196,154,60,0.2);
+    }
+
+    footer p {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.05em;
+    }
+
+    footer span { color: var(--gold); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { gap: 1.2rem; }
+      .about { grid-template-columns: 1fr; }
+      .about-img { height: 360px; }
+      .about-text { padding: 3rem 2rem; }
+      .menu-grid { grid-template-columns: 1fr; padding: 0 1rem; }
+      .menu-section { padding: 4rem 1.5rem; }
+      .gallery { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+      .gallery-item:first-child { grid-column: span 2; grid-row: span 1; }
+      .testi-grid { grid-template-columns: 1fr; }
+      .testimonials { padding: 4rem 1.5rem; }
+      .info-section { grid-template-columns: 1fr; }
+      .info-map { min-height: 300px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">Milisoc</div>
+    <ul class="nav-links">
+      <li><a href="#about">Despre noi</a></li>
+      <li><a href="#menu">Meniu</a></li>
+      <li><a href="#galerie">Galerie</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-tag">Căușeni, Moldova</div>
+      <h1>Restaurant<br><em>Milisoc</em></h1>
+      <p class="hero-sub">Savurați gusturi autentice într-o atmosferă caldă și primitoare</p>
+      <a href="#menu" class="btn">Descoperă meniul</a>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="about-img"></div>
+    <div class="about-text">
+      <div class="section-label">Povestea noastră</div>
+      <h2>Mâncare bună,<br>oameni calzi</h2>
+      <p>Restaurantul Milisoc este un loc de suflet din inima Căușeniului. De ani de zile, îi întâmpinăm pe oaspeți cu bucate tradiționale moldovenești, preparate proaspăt în fiecare zi.</p>
+      <p>De la grătare suculente și salate proaspete, până la pizza crocantă și deserturi de casă — fiecare farfurie este pregătită cu pasiune și ingrediente de calitate.</p>
+      <div class="stats">
+        <div>
+          <div class="stat-num">3.9★</div>
+          <div class="stat-label">Rating clienți</div>
+        </div>
+        <div>
+          <div class="stat-num">119+</div>
+          <div class="stat-label">Recenzii</div>
+        </div>
+        <div>
+          <div class="stat-num">7/7</div>
+          <div class="stat-label">Zile deschis</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MENU -->
+  <section class="menu-section" id="menu">
+    <div class="section-label">Specialitățile casei</div>
+    <h2>Meniul nostru</h2>
+    <p class="intro">Preparate tradiționale și internaționale, gătite cu dragoste în fiecare zi</p>
+
+    <div class="menu-grid">
+      <div class="menu-card">
+        <img class="menu-card-img"
+          src="https://images.unsplash.com/photo-1544025162-d76694265947?w=600&q=80"
+          alt="Grătar moldovenesc">
+        <div class="menu-card-body">
+          <div class="menu-card-tag">Specialitate</div>
+          <h3>Grătar Moldovenesc</h3>
+          <p>Mici, cotlet și cârnați de casă, pregătiți pe grătar cu lemne de fag. Serviți cu mujdei de usturoi și pâine proaspătă.</p>
+          <div class="menu-card-price">de la 89 MDL</div>
+        </div>
+      </div>
+
+      <div class="menu-card">
+        <img class="menu-card-img"
+          src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600&q=80"
+          alt="Pizza Milisoc">
+        <div class="menu-card-body">
+          <div class="menu-card-tag">Cel mai popular</div>
+          <h3>Pizza Milisoc</h3>
+          <p>Pizza cu aluat subțire și crocant, cu sos de roșii fait maison, mozzarella și topping-uri proaspete după alegere.</p>
+          <div class="menu-card-price">de la 65 MDL</div>
+        </div>
+      </div>
+
+      <div class="menu-card">
+        <img class="menu-card-img"
+          src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&q=80"
+          alt="Salată proaspătă">
+        <div class="menu-card-body">
+          <div class="menu-card-tag">Sănătos</div>
+          <h3>Salate Proaspete</h3>
+          <p>Salate din legume de sezon, combinate cu brânzeturi locale și dressing-uri artizanale. Perfecte pentru o masă ușoară.</p>
+          <div class="menu-card-price">de la 45 MDL</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="gallery" id="galerie">
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=900&q=80" alt="Interior restaurant">
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&q=80" alt="Preparate delicioase">
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&q=80" alt="Atmosfera restaurantului">
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1424847651672-bf20a4b0982b?w=600&q=80" alt="Terasă de vară">
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?w=600&q=80" alt="Deserturi">
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials">
+    <h2>Ce spun clienții noștri</h2>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="stars">★★★★★</div>
+        <p>"Mâncarea este bună și prețurile sunt accesibile. Pizza este crocantă și delicioasă. Voi reveni cu siguranță!"</p>
+        <div class="testi-author">— Andrei M., Căușeni</div>
+      </div>
+      <div class="testi-card">
+        <div class="stars">★★★★☆</div>
+        <p>"Terasa de vară este absolut minunată — umbrele, liniște, mâncare bună. Locul perfect pentru o seară cu familia."</p>
+        <div class="testi-author">— Elena V., Chișinău</div>
+      </div>
+      <div class="testi-card">
+        <div class="stars">★★★★★</div>
+        <p>"Unicul lucru creat de osipov Sandu :)"</p>
+        <div class="testi-author">— Osipov Sandu</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INFO + MAP -->
+  <section class="info-section" id="contact">
+    <div class="info-map">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2736.5!2d29.408!3d46.635!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDbCsDM4JzA2LjAiTiAyOcKwMjQnMjguOCJF!5e0!3m2!1sro!2smd!4v1700000000000!5m2!1sro!2smd"
+        allowfullscreen loading="lazy">
+      </iframe>
+    </div>
+    <div class="info-details">
+      <div>
+        <div class="section-label" style="color:var(--gold)">Ne găsiți</div>
+        <h2 style="color:#fff;">Informații & Contact</h2>
+      </div>
+      <div class="info-item">
+        <div class="info-icon">📍</div>
+        <div>
+          <div class="info-label">Adresă</div>
+          <div class="info-value">Strada Principală, Căușeni<br>Moldova</div>
+        </div>
+      </div>
+      <div class="info-item">
+        <div class="info-icon">🕐</div>
+        <div>
+          <div class="info-label">Program</div>
+          <div class="info-value">Luni – Duminică<br>08:00 – 23:00</div>
+        </div>
+      </div>
+      <div class="info-item">
+        <div class="info-icon">📞</div>
+        <div>
+          <div class="info-label">Rezervări</div>
+          <div class="info-value">+373 (0) XXX-XXXX</div>
+        </div>
+      </div>
+      <div class="info-item">
+        <div class="info-icon">🍕</div>
+        <div>
+          <div class="info-label">Specialități</div>
+          <div class="info-value">Grătar, Pizza, Salate, Deserturi</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 Restaurant <span>Milisoc</span> · Căușeni, Moldova · Cu drag pentru fiecare oaspete</p>
+  </footer>
+
+</body>
+</html>
